@@ -67,12 +67,12 @@ function chooseColor(target){
     let opacity = +target.style.opacity
     if (!target.matches(".pixel-shaded")){
         target.classList.add("pixel-shaded");
-        target.style.opacity = 0+penStrength <= 1 ? 0+penStrength : 1;
+        target.style.opacity = penStrength;
         console.log("clicked unshaded");
+    } else if (opacity < penStrength){
+    target.style.opacity = penStrength+0.1;
     } else {
-    console.log(`opacity: ${opacity+0.1}`);
-    target.style.opacity = opacity+penStrength <= 1 ? opacity+penStrength: 1;
-    console.log("clicked shaded");
+        target.style.opacity = opacity+0.1;
     }
 }
 
