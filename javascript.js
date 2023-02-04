@@ -7,6 +7,7 @@ let pixelArr = [];
 let pixelGridRoot = 20;
 console.log("jdkfsf");
 let pixelSize = `${(containerWidth-pixelGridRoot)/(pixelGridRoot)-1}px`;
+let penStrength = 0.1;
 console.log(containerWidth);
 console.log(pixelSize);
 buildGrid();
@@ -23,11 +24,25 @@ document.getElementById('pixel-select').onclick = () => {
     }
 }
 
+document.getElementById('pen-select').onclick = () => {
+    result = prompt("enter pen strength from 1 to 100")
+    if ((Number.isInteger((result/1)) && result <= 100) && result > 0){
+    penStrength = result/100;
+    // if (penStrength !== 1){
+    //     penStrength = penStrength/(2+penStrength)+(1);
+    //     console.log(penStrength);
+    // }
+    } else {
+        alert("error: pick a whole number between 1 and 100")
+    }
+}
+
 let mouseDown = false;
 document.body.onmousedown = function() { 
   mouseDown = true;
   if (currentHover.matches(':hover')){
     currentHover.classList.add("pixel-shaded");
+    chooseColor(currentHover);
   }
   
 }
@@ -40,13 +55,27 @@ document.body.onmouseup = function() {
 
 
 function draw(event){
-    if(event.target.matches(".pixel")) {
+    if(event.target.matches(".pixel")|| event.target.matches(".pixel-shaded")) {
+        
         currentHover = event.target;
         if (mouseDown){
-        event.target.classList.add("pixel-shaded");
+        chooseColor(event.target);
     }
     }
 }
+function chooseColor(target){
+    let opacity = +target.style.opacity
+    if (!target.matches(".pixel-shaded")){
+        target.classList.add("pixel-shaded");
+        target.style.opacity = 0+penStrength <= 1 ? 0+penStrength : 1;
+        console.log("clicked unshaded");
+    } else {
+    console.log(`opacity: ${opacity+0.1}`);
+    target.style.opacity = opacity+penStrength <= 1 ? opacity+penStrength: 1;
+    console.log("clicked shaded");
+    }
+}
+
 
 function gridReset(){
     eraseGrid();
